@@ -231,7 +231,6 @@
 
   function buildRailHTML() {
     const buttons = [
-      { id: "focus", icon: "⊙", tip: "Focus mode" },
       { id: "bold", icon: "B", tip: "Bold text" },
       { id: "dyslexia", icon: "Dy", tip: "Dyslexia-friendly" },
       { id: "largeText", icon: "A+", tip: "Large text" },
