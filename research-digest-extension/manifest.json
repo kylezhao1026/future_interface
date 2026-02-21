@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "News Digest",
+  "version": "2.0",
+  "description": "Clean reader view and AI digest for news articles",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "background": {
+    "service_worker": "service_worker.js"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "icons": {},
+  "action": {
+    "default_title": "Digest this article"
+  }
+}
