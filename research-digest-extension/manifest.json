@@ -1,9 +1,13 @@
 {
   "manifest_version": 3,
-  "name": "News Digest",
-  "version": "2.0",
-  "description": "Clean reader view and AI digest for news articles",
+  "name": "Page Digest",
+  "version": "4.0",
+  "description": "AI digest for articles, Google Docs, Slides, PDFs, and Wikipedia",
   "permissions": ["activeTab", "scripting", "storage"],
+  "host_permissions": [
+    "https://docs.google.com/*",
+    "https://drive.google.com/*"
+  ],
   "background": {
     "service_worker": "service_worker.js"
   },
@@ -11,8 +15,12 @@
     "page": "options.html",
     "open_in_tab": true
   },
+  "web_accessible_resources": [{
+    "resources": ["lib/pdfjs/pdf.worker.min.js"],
+    "matches": ["<all_urls>"]
+  }],
   "icons": {},
   "action": {
-    "default_title": "Digest this article"
+    "default_title": "Digest this page"
   }
 }
