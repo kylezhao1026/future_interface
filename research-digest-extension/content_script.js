@@ -8,7 +8,7 @@
   chrome.runtime.onMessage.addListener(messageHandler);
   globalThis.__newsDigestMessageHandler = messageHandler;
 
-  const A11Y_KEYS = ["focus", "bold", "dyslexia", "largeText", "lineSpacing", "reducedMotion", "highContrast"];
+  const A11Y_KEYS = ["focus", "bold", "dyslexia", "largeText", "lineSpacing", "highContrast"];
   const A11Y_DEFAULTS = Object.fromEntries(A11Y_KEYS.map((k) => [k, false]));
   const hasExtensionContext = () => {
     try {
@@ -91,20 +91,14 @@
 </div>`;
 
     const overlay = shadow.getElementById("overlay");
-    const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
-    if (prefersReducedMotion) {
-      overlay.classList.remove("overlay-enter");
-      overlay.classList.add("overlay-visible");
-    } else {
-      // Force the initial "enter" state to paint before transitioning out of it.
-      overlay.getBoundingClientRect();
-      requestAnimationFrame(() => {
-        setTimeout(() => {
-          overlay.classList.remove("overlay-enter");
-          overlay.classList.add("overlay-visible");
-        }, 35);
-      });
-    }
+    // Force the initial "enter" state to paint before transitioning out of it.
+    overlay.getBoundingClientRect();
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        overlay.classList.remove("overlay-enter");
+        overlay.classList.add("overlay-visible");
+      }, 35);
+    });
 
     const $ = (sel) => shadow.querySelector(sel);
     const headline = $("#headline");
@@ -173,7 +167,6 @@
       { id: "dyslexia", icon: "Dy", tip: "Dyslexia-friendly" },
       { id: "largeText", icon: "A+", tip: "Large text" },
       { id: "lineSpacing", icon: "☰", tip: "Line spacing" },
-      { id: "reducedMotion", icon: "◇", tip: "Reduced motion" },
       { id: "highContrast", icon: "◐", tip: "High contrast" },
       { id: "reset", icon: "↺", tip: "Reset all" },
     ];
@@ -273,8 +266,6 @@
   }
 
   function animateDigestReveal(overlay, container) {
-    if (overlay.classList.contains("mode-reducedMotion")) return;
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) return;
     const blocks = [...container.querySelectorAll(".tldr-block, .digest-section")];
     if (!blocks.length) return;
     const canAnimate = typeof blocks[0].animate === "function";
@@ -386,22 +377,6 @@
 @keyframes railReveal {
   from { opacity:0; }
   to { opacity:1; }
-}
-.overlay.mode-reducedMotion,
-.overlay.mode-reducedMotion.overlay-enter {
-  animation:none !important;
-  transform: scale(1) !important;
-  opacity: 1 !important;
-}
-.overlay.mode-reducedMotion .toolbar,
-.overlay.mode-reducedMotion .content,
-.overlay.mode-reducedMotion .rail,
-.overlay.mode-reducedMotion .col {
-  opacity:1 !important;
-  transform:none !important;
-  animation:none !important;
-  transition:none !important;
-  filter:none !important;
 }
 
 /* ===== Toolbar (sticky) ===== */
@@ -620,19 +595,6 @@
 .mode-lineSpacing .tldr-block,
 .mode-lineSpacing .article-area,
 .mode-lineSpacing .article-area p { line-height:2.0; }
-
-.mode-reducedMotion *,
-.mode-reducedMotion *::before,
-.mode-reducedMotion *::after {
-  animation-duration:0s !important;
-  transition-duration:0s !important;
-}
-.mode-reducedMotion .digest-enter,
-.mode-reducedMotion .digest-enter.digest-enter-active {
-  opacity:1 !important;
-  transform:none !important;
-  filter:none !important;
-}
 
 .mode-highContrast {
   background:#111 !important; color:#f5f5f5 !important;
